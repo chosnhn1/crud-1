@@ -1,11 +1,39 @@
 from django.shortcuts import render
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
+# from rest_framework.permissions import IsAdminUser
+from rest_framework.decorators import action, api_view, permission_classes
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
+from rest_framework.response import Response
 
 # Create your views here.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all().order_by('-pk')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+# Class-based views
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = get_user_model().objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAdminUser]
     
+#     @action(detail=True, methods=['post'])
+#     def set_password(self, request, pk=None):
+#         user = self.get_object()
+        
+
+# Function-based views
+@api_view(['GET', 'POST'])
+def user_list(request):
+    if request.method == 'GET':
+        queryset = get_user_model().objects.all()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = UserSerializer(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=request.data, status=status.HTTP_201_CREATED)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_detail(request, pk):
+    pass
