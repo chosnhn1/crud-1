@@ -29,16 +29,16 @@ def user_list(request):
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(data=request.data, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, pk):
     if request.method == 'GET':
-        queryset =get_object_or_404(get_user_model(), pk=pk)
+        queryset = get_object_or_404(get_user_model(), pk=pk)
         # queryset = get_user_model().objects.filter(pk=pk)
         serializer = UserSerializer(queryset)
         return Response(serializer.data)
