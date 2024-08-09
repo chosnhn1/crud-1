@@ -3,6 +3,7 @@ from rest_framework import permissions, viewsets, status
 # from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action, api_view, permission_classes
 from django.contrib.auth import get_user_model
+from django.contrib.auth import login as django_login
 from django.shortcuts import get_object_or_404, get_list_or_404
 from .serializers import UserSerializer
 from rest_framework.response import Response
