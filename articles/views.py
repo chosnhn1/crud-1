@@ -14,5 +14,7 @@ class ArticleListView(generics.ListCreateAPIView):
         return super().perform_create(serializer)
 
 
-# class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Article.objects.
+class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
+    pass 
+
+

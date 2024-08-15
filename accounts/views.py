@@ -45,19 +45,21 @@ def user_detail(request, pk):
         return Response(serializer.data)
     
     elif request.method == 'PUT':
-        queryset = get_user_model().objects.filter(pk=pk)
-        if request.user == queryset:
-            serializer = UserSerializer(queryset, data=request.data)
+        user = get_user_model().objects.get(pk=pk)
+        if request.user == user:
+            serializer = UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        print(request.user)
+        print(user)
         return Response(status=status.HTTP_403_FORBIDDEN)
     
     elif request.method == 'DELETE':
-        queryset = get_user_model().objects.filter(pk=pk)
-        if request.user == queryset:
-            queryset.delete()
+        user = get_user_model().objects.get(pk=pk)
+        if request.user == user:
+            user.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         
     return Response(status=status.HTTP_400_BAD_REQUEST)
