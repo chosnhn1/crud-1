@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions
 from .models import Article
 from .serializers import ArticleSerializer
+from .permissions import IsAuthorOrReadOnly
 
 # Create your views here.
 class ArticleListView(generics.ListCreateAPIView):
@@ -15,6 +16,8 @@ class ArticleListView(generics.ListCreateAPIView):
 
 
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
-    pass 
+    serializer_class = ArticleSerializer
+    permission_classes = [IsAuthorOrReadOnly]
+    queryset = Article.objects.all().order_by('-pk')
 
-
+    

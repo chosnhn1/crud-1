@@ -177,3 +177,4 @@ pyrightconfig.json
 
 # Others
 crud/others/
+frontend/node_modules/

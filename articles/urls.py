@@ -17,8 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework import renderers
-from .views import ArticleListView
+from .views import ArticleListView, ArticleDetail
 
 urlpatterns = [
-    path('', ArticleListView.as_view())
+    path('', ArticleListView.as_view()),
+    path('<int:pk>/', ArticleDetail.as_view()),
 ]
